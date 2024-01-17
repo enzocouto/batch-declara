@@ -24,9 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.ecouto.batchdeclara.arquivolayout.writer.GravarLeituraArquivoLayout;
 import com.ecouto.batchdeclara.model.ArquivoLayout;
 import com.ecouto.batchdeclara.model.FileIndice;
-import com.ecouto.batchdeclara.writer.GravarLeituraArquivoLayout;
 
 
 @Configuration

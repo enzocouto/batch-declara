@@ -1,4 +1,4 @@
-package com.ecouto.batchdeclara.writer;
+package com.ecouto.batchdeclara.arquivolayout.writer;
 
 import java.util.List;
 
