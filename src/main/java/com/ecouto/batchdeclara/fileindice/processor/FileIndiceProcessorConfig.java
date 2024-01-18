@@ -7,7 +7,7 @@ import java.util.Calendar;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
-import com.ecouto.batchdeclara.enums.StatusEnvio;
+import com.ecouto.batchdeclara.enums.StatusEnvioEnum;
 import com.ecouto.batchdeclara.enums.TipoEnvioEnum;
 import com.ecouto.batchdeclara.model.ArquivoLayout;
 import com.ecouto.batchdeclara.model.FileIndice;
@@ -23,14 +23,13 @@ public class FileIndiceProcessorConfig implements ItemProcessor<FileIndice, Arqu
 	@Override
 	public ArquivoLayout process(FileIndice item) throws Exception {
 		
-		System.out.println("FileIndiceProcessorConfig");
 		ArquivoLayout arquivoLayout = new ArquivoLayout();
 		arquivoLayout.setNomeArquivo(item.getNomeArquivo());
 		arquivoLayout.setTipoLayout(extractTipoLayout(item.getNomeArquivo()));
 		arquivoLayout.setTipoEnvio(extractTipoEnvio(item.getNomeArquivo()));
 		arquivoLayout.setAnoMesRef(extractAnoMesRef(item.getNomeArquivo()));
 		arquivoLayout.setDtProcessamento(LocalDateTime.now());
-		arquivoLayout.setStatusEnvio(StatusEnvio.AGUARDANDO_PROCESSAMENTO.getValor());
+		arquivoLayout.setStatusEnvio(StatusEnvioEnum.AGUARDANDO_PROCESSAMENTO.getValor());
 		
 		return arquivoLayout;
 	}

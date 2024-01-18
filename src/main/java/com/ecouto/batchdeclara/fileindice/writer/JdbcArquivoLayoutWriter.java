@@ -20,12 +20,19 @@ public class JdbcArquivoLayoutWriter {
 
 	@Bean
 	public JdbcBatchItemWriter<ArquivoLayout> jdbcArquivoWriter(DataSource dataSource){
-		return new JdbcBatchItemWriterBuilder<ArquivoLayout>()
+		
+		System.out.println("GRAVANDO TABELA ARQUIVO_LAYOUT");
+		
+		JdbcBatchItemWriter<ArquivoLayout> jdbcBatchItemWriterBuilder = new JdbcBatchItemWriterBuilder<ArquivoLayout>()
 				.dataSource(dataSource)
 				.sql("INSERT INTO ARQUIVO_LAYOUT(TIPO_LAYOUT,NOME_ARQUIVO,TIPO_ENVIO,"
 						+ "ANO_MES_REF,DATA_PROCESSAMENTO,STATUS_ENVIO) VALUES (?,?,?,?,?,?)")
 				.itemPreparedStatementSetter(itemPreparedStatementSetter())
 				.build();
+		
+		
+		
+		return jdbcBatchItemWriterBuilder;
 	}
 
 	private ItemPreparedStatementSetter<ArquivoLayout> itemPreparedStatementSetter() {

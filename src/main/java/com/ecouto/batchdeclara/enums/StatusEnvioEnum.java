@@ -1,6 +1,6 @@
 package com.ecouto.batchdeclara.enums;
 
-public enum StatusEnvio {
+public enum StatusEnvioEnum {
 
 	
 	AGUARDANDO_PROCESSAMENTO(1), PROCESSANDO(2), PROCESSAMENTO_FINALIZADO(3);
@@ -8,7 +8,7 @@ public enum StatusEnvio {
 	
 	private int valor;
 	
-	StatusEnvio(int valor){
+	StatusEnvioEnum(int valor){
 		this.valor = valor;
 	}
 	

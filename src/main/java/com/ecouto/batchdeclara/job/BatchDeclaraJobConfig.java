@@ -28,7 +28,7 @@ public class BatchDeclaraJobConfig {
 		return jobBuilderFactory
 				.get("batchDeclaraJob")
 				.incrementer(new RunIdIncrementer())
-				.start(leituraNomesArquivosStep)	
+				.start(leituraNomesArquivosStep)
 				.next(leituraArquivoStep)
 				.build();
 		

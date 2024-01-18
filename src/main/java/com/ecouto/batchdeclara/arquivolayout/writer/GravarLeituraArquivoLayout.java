@@ -15,7 +15,6 @@ public class GravarLeituraArquivoLayout implements ItemWriter<ArquivoLayout> {
 	@Override
 	public void write(List<? extends ArquivoLayout> items) throws Exception {
 		
-		System.out.println("GravarLeituraArquivoLayout");
 		for (ArquivoLayout arquivoLayout : items) {
 			
 			System.out.println(arquivoLayout.getNomeArquivo());

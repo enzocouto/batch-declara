@@ -1,5 +1,7 @@
 package com.ecouto.batchdeclara.step.chunk;
 
+import javax.sql.DataSource;
+
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemReader;
@@ -23,9 +25,10 @@ public class LeituraNomesArquivosStepConfig {
 	@Autowired
 	FileIndiceProcessorConfig fileIndiceProcessor;
 	
+	
 	@Bean
 	public Step leituraNomesArquivosStep(ItemReader<FileIndice> leituraFileIndiceReader,
-			JdbcBatchItemWriter<ArquivoLayout> jdbcArquivoWriter) {
+			JdbcBatchItemWriter<ArquivoLayout> jdbcArquivoWriter, DataSource dataSource) {
 		
 		return stepBuilderFactory.get("leituraNomesArquivosStep")
 				.<FileIndice,ArquivoLayout>chunk(1)
@@ -34,4 +37,5 @@ public class LeituraNomesArquivosStepConfig {
 				.writer(jdbcArquivoWriter)
 				.build();
 	}
+
 }
