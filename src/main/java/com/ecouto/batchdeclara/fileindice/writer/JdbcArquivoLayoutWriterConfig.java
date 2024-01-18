@@ -10,16 +10,18 @@ import javax.sql.DataSource;
 import org.springframework.batch.item.database.ItemPreparedStatementSetter;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import com.ecouto.batchdeclara.model.ArquivoLayout;
 
-@Configuration
-public class JdbcArquivoLayoutWriter {
+//@Component
+public class JdbcArquivoLayoutWriterConfig {
 
-	@Bean
+
 	public JdbcBatchItemWriter<ArquivoLayout> jdbcArquivoWriter(DataSource dataSource){
+		
+		
+		//System.out.println("STEP 1 - WRITER - GRAVANDO ARQUIVO LAYOUT");
 		return new JdbcBatchItemWriterBuilder<ArquivoLayout>()
 				.dataSource(dataSource)
 				.sql("INSERT INTO ARQUIVO_LAYOUT(TIPO_LAYOUT,NOME_ARQUIVO,TIPO_ENVIO,"
