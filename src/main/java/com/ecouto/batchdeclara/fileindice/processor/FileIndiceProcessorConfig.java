@@ -1,6 +1,8 @@
 package com.ecouto.batchdeclara.fileindice.processor;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.Calendar;
 
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
