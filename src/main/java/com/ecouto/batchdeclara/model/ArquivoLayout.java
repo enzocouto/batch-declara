@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.ecouto.batchdeclara.enums.StatusEnvioEnum;
 import com.ecouto.batchdeclara.enums.TipoEnvioEnum;
 
 import lombok.AllArgsConstructor;
@@ -50,4 +51,54 @@ public class ArquivoLayout {
 	
 	@Column(name = "status_envio")
 	private Integer statusEnvio;
+	
+	
+	private static final Integer TIPO_LAYOUT = 2;
+	private static final Integer TIPO_ENVIO = 3;
+	private static final Integer ANO_MES_REF = 4;
+	private static final String SPLIT_CARACT = "_"; 
+	
+	public ArquivoLayout(String nomeArquivo) {
+		this.nomeArquivo = nomeArquivo;
+		this.tipoLayout = extractTipoLayout(nomeArquivo);
+		this.tipoEnvio = extractTipoEnvio(nomeArquivo);
+		this.qtdEvento = 0;
+		this.anoMesRef = extractAnoMesRef(nomeArquivo);
+		this.dtProcessamento = LocalDateTime.now();
+		this.statusEnvio = StatusEnvioEnum.AGUARDANDO_PROCESSAMENTO.getValor();
+		
+	}
+	
+	private static String extractTipoLayout(String nomeArquivo) {
+		String tipoLayout = null;
+		String[] splitNomeArquivo = getNomeArquivoSplit(nomeArquivo);
+		if(splitNomeArquivo != null) 
+			tipoLayout = splitNomeArquivo[TIPO_LAYOUT];
+		
+		return tipoLayout;
+	}
+	
+	private static String[] getNomeArquivoSplit(String nomeArquivo) {
+		String[] splitNomeArquivo = nomeArquivo.split(SPLIT_CARACT);
+		return splitNomeArquivo;
+	}
+	
+    private static TipoEnvioEnum extractTipoEnvio(String nomeArquivo) {
+		
+		String strTipoEnvio = null;
+		String[] splitNomeArquivo = getNomeArquivoSplit(nomeArquivo);
+		if(splitNomeArquivo != null) 
+			strTipoEnvio = splitNomeArquivo[TIPO_ENVIO];
+		
+		return TipoEnvioEnum.getTipoEnvioByName(strTipoEnvio);
+	}
+    
+    private String extractAnoMesRef(String nomeArquivo) {
+		String anoMesRef = null;
+		String[] splitNomeArquivo = getNomeArquivoSplit(nomeArquivo);
+		if(splitNomeArquivo != null) 
+			anoMesRef = splitNomeArquivo[ANO_MES_REF];
+		
+		return anoMesRef;
+	}
 }

@@ -15,12 +15,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-public class CustomJobLauncher extends SimpleJobLauncher {
+public class SalvarArquivoLayoutJobLauncher extends SimpleJobLauncher {
 	
 	
 	
   @Autowired
-  public CustomJobLauncher(JobRepository jobRepository) {
+  public SalvarArquivoLayoutJobLauncher(JobRepository jobRepository) {
     this.setJobRepository(jobRepository);
   }
   

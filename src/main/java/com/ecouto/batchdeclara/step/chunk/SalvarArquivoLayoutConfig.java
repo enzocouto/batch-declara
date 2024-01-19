@@ -1,6 +1,8 @@
 package com.ecouto.batchdeclara.step.chunk;
 
-import java.time.LocalDateTime;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.sql.Timestamp;
 
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.Step;
@@ -13,19 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
-import com.ecouto.batchdeclara.enums.StatusEnvioEnum;
-import com.ecouto.batchdeclara.enums.TipoEnvioEnum;
 import com.ecouto.batchdeclara.model.ArquivoLayout;
 
 @Configuration
 public class SalvarArquivoLayoutConfig {
 
-	
-	private static final Integer TIPO_LAYOUT = 2;
-	private static final Integer TIPO_ENVIO = 3;
-	private static final Integer ANO_MES_REF = 4; 
-	
+
 	@Autowired
 	public StepBuilderFactory stepBuilderFactory;
 	
@@ -53,25 +51,30 @@ public class SalvarArquivoLayoutConfig {
 					
 					String nomeArquivo = jobParameters.getString("nomeArquivo");
 					
-					ArquivoLayout arquivoLayout = new ArquivoLayout();
-					arquivoLayout.setNomeArquivo(nomeArquivo);
-					arquivoLayout.setTipoLayout(extractTipoLayout(nomeArquivo));
-					arquivoLayout.setTipoEnvio(extractTipoEnvio(nomeArquivo));
-					arquivoLayout.setAnoMesRef(extractAnoMesRef(nomeArquivo));
-					arquivoLayout.setDtProcessamento(LocalDateTime.now());
-					arquivoLayout.setStatusEnvio(StatusEnvioEnum.AGUARDANDO_PROCESSAMENTO.getValor());
+					ArquivoLayout arquivoLayout = new ArquivoLayout(nomeArquivo);
 					
 					StringBuilder strBuilder = new StringBuilder();
 					strBuilder.append("INSERT INTO ARQUIVO_LAYOUT(TIPO_LAYOUT,NOME_ARQUIVO,TIPO_ENVIO,");
 					strBuilder.append(" ANO_MES_REF,DATA_PROCESSAMENTO,STATUS_ENVIO) VALUES (?,?,?,?,?,?)");
-			        jdbcTemplate.update(strBuilder.toString(), 
-			        		arquivoLayout.getTipoLayout(), 
-			        		arquivoLayout.getNomeArquivo(),
-			        		arquivoLayout.getTipoEnvio().getValor(),
-			        		arquivoLayout.getAnoMesRef(),
-			        		arquivoLayout.getDtProcessamento(),
-			        		arquivoLayout.getStatusEnvio()); 
-								
+					
+					
+					KeyHolder keyHolder = new GeneratedKeyHolder();
+					
+					
+					 jdbcTemplate.update(connection -> {
+					        PreparedStatement ps = connection
+					          .prepareStatement(strBuilder.toString(), Statement.RETURN_GENERATED_KEYS);
+					          ps.setString(1, arquivoLayout.getTipoLayout());
+					          ps.setString(2, arquivoLayout.getNomeArquivo());
+					          ps.setInt(3, arquivoLayout.getTipoEnvio().getValor());
+					          ps.setString(4, arquivoLayout.getAnoMesRef());
+					          ps.setTimestamp(5, Timestamp.valueOf(arquivoLayout.getDtProcessamento()));
+					          ps.setInt(6, arquivoLayout.getStatusEnvio());
+					          return ps;
+					        }, keyHolder);
+					
+			             System.out.println("KEY: "+ keyHolder.getKey());
+			             arquivoLayout.setId(keyHolder.getKey().longValue());
 				}
 				 															
 				return RepeatStatus.FINISHED;
@@ -81,36 +84,4 @@ public class SalvarArquivoLayoutConfig {
 
 	}
 
-	public TipoEnvioEnum extractTipoEnvio(String nomeArquivo) {
- 		
-		String strTipoEnvio = null;
-		String[] splitNomeArquivo = getNomeArquivoSplit(nomeArquivo);
-		if(splitNomeArquivo != null) 
-			strTipoEnvio = splitNomeArquivo[TIPO_ENVIO];
-		
-		return TipoEnvioEnum.getTipoEnvioByName(strTipoEnvio);
-	}
-
-	private String extractTipoLayout(String nomeArquivo) {
-		String tipoLayout = null;
-		String[] splitNomeArquivo = getNomeArquivoSplit(nomeArquivo);
-		if(splitNomeArquivo != null) 
-			tipoLayout = splitNomeArquivo[TIPO_LAYOUT];
-		
-		return tipoLayout;
-	}
-	
-	private String extractAnoMesRef(String nomeArquivo) {
-		String anoMesRef = null;
-		String[] splitNomeArquivo = getNomeArquivoSplit(nomeArquivo);
-		if(splitNomeArquivo != null) 
-			anoMesRef = splitNomeArquivo[ANO_MES_REF];
-		
-		return anoMesRef;
-	}
-	
-	private String[] getNomeArquivoSplit(String nomeArquivo) {
-		String[] splitNomeArquivo = nomeArquivo.split("_");
-		return splitNomeArquivo;
-	}
 }

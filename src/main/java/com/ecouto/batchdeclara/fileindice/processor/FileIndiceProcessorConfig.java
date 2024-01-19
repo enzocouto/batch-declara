@@ -1,6 +1,5 @@
 package com.ecouto.batchdeclara.fileindice.processor;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,20 +15,14 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ecouto.batchdeclara.enums.StatusEnvioEnum;
-import com.ecouto.batchdeclara.enums.TipoEnvioEnum;
-import com.ecouto.batchdeclara.job.CustomJobLauncher;
+import com.ecouto.batchdeclara.job.SalvarArquivoLayoutJobLauncher;
 import com.ecouto.batchdeclara.model.ArquivoLayout;
 import com.ecouto.batchdeclara.model.FileIndice;
 
 @Component
 public class FileIndiceProcessorConfig implements ItemProcessor<FileIndice, ArquivoLayout>{
 
-	
-	private static final Integer TIPO_LAYOUT = 2;
-	private static final Integer TIPO_ENVIO = 3;
-	private static final Integer ANO_MES_REF = 4; 
-	
+
 	@Autowired
 	public JobLauncher jobLauncher;
 	
@@ -41,7 +34,7 @@ public class FileIndiceProcessorConfig implements ItemProcessor<FileIndice, Arqu
 	private JobBuilderFactory jobBuilderFactory;
 	
 	@Autowired
-	CustomJobLauncher customJobLauncher;
+	SalvarArquivoLayoutJobLauncher customJobLauncher;
 		
 	
 	@Autowired
@@ -50,15 +43,8 @@ public class FileIndiceProcessorConfig implements ItemProcessor<FileIndice, Arqu
 	@Override
 	public ArquivoLayout process(FileIndice item) throws Exception {
 		
-		ArquivoLayout arquivoLayout = new ArquivoLayout();
-		arquivoLayout.setNomeArquivo(item.getNomeArquivo());
-		arquivoLayout.setTipoLayout(extractTipoLayout(item.getNomeArquivo()));
-		arquivoLayout.setTipoEnvio(extractTipoEnvio(item.getNomeArquivo()));
-		arquivoLayout.setAnoMesRef(extractAnoMesRef(item.getNomeArquivo()));
-		arquivoLayout.setDtProcessamento(LocalDateTime.now());
-		arquivoLayout.setStatusEnvio(StatusEnvioEnum.AGUARDANDO_PROCESSAMENTO.getValor());
-		
-		
+		ArquivoLayout arquivoLayout = new ArquivoLayout(item.getNomeArquivo());
+	
 		Map<String, JobParameter> mapParameters = new HashMap<>();
 		mapParameters.put("nomeArquivo", new JobParameter(arquivoLayout.getNomeArquivo()));
 		JobParameters parameters = new JobParameters(mapParameters);
@@ -74,39 +60,4 @@ public class FileIndiceProcessorConfig implements ItemProcessor<FileIndice, Arqu
 				.start(salvarArquivoLayoutStep)
 				.build();
 	}
-
-
-	private TipoEnvioEnum extractTipoEnvio(String nomeArquivo) {
-		
-		String strTipoEnvio = null;
-		String[] splitNomeArquivo = getNomeArquivoSplit(nomeArquivo);
-		if(splitNomeArquivo != null) 
-			strTipoEnvio = splitNomeArquivo[TIPO_ENVIO];
-		
-		return TipoEnvioEnum.getTipoEnvioByName(strTipoEnvio);
-	}
-
-	private String extractTipoLayout(String nomeArquivo) {
-		String tipoLayout = null;
-		String[] splitNomeArquivo = getNomeArquivoSplit(nomeArquivo);
-		if(splitNomeArquivo != null) 
-			tipoLayout = splitNomeArquivo[TIPO_LAYOUT];
-		
-		return tipoLayout;
-	}
-	
-	private String extractAnoMesRef(String nomeArquivo) {
-		String anoMesRef = null;
-		String[] splitNomeArquivo = getNomeArquivoSplit(nomeArquivo);
-		if(splitNomeArquivo != null) 
-			anoMesRef = splitNomeArquivo[ANO_MES_REF];
-		
-		return anoMesRef;
-	}
-	
-	private String[] getNomeArquivoSplit(String nomeArquivo) {
-		String[] splitNomeArquivo = nomeArquivo.split("_");
-		return splitNomeArquivo;
-	}
-	
 }
