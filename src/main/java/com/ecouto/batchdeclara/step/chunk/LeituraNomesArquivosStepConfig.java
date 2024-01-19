@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +29,7 @@ public class LeituraNomesArquivosStepConfig {
 	
 	@Bean
 	public Step leituraNomesArquivosStep(ItemReader<FileIndice> leituraFileIndiceReader,
-			JdbcBatchItemWriter<ArquivoLayout> jdbcArquivoWriter, DataSource dataSource) {
+			ItemWriter<ArquivoLayout> jdbcArquivoWriter, DataSource dataSource) {
 		
 		return stepBuilderFactory.get("leituraNomesArquivosStep")
 				.<FileIndice,ArquivoLayout>chunk(1)

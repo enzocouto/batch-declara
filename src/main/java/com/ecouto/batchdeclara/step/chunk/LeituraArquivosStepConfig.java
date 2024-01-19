@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.ecouto.batchdeclara.arquivolayout.reader.MultiplosArquivosLayoutReaderConfig;
 import com.ecouto.batchdeclara.arquivolayout.writer.GravarLeituraArquivoLayout;
 import com.ecouto.batchdeclara.model.ArquivoLayout;
 
@@ -17,8 +16,7 @@ import com.ecouto.batchdeclara.model.ArquivoLayout;
 @Configuration
 public class LeituraArquivosStepConfig {
 
-	
-	
+
 	@Autowired
 	private StepBuilderFactory stepBuilderFactory;
 	
@@ -26,18 +24,14 @@ public class LeituraArquivosStepConfig {
 	@Autowired
 	GravarLeituraArquivoLayout gravarLeituraArquivoLayout;
 	
-	
-	@Autowired
-	MultiplosArquivosLayoutReaderConfig multiplosArquivosLayoutReader;
-	
 	@Bean
 	public Step leituraArquivoStep(
-			ItemProcessor<ArquivoLayout, ArquivoLayout> processor,FlatFileItemReader<ArquivoLayout> reader) {
+			ItemProcessor<ArquivoLayout, ArquivoLayout> processor,FlatFileItemReader<ArquivoLayout> leituraArquivoLayout) {
 			      
 		return stepBuilderFactory
 				.get("leituraArquivoStep")
 				.<ArquivoLayout, ArquivoLayout>chunk(1)
-				.reader(multiplosArquivosLayoutReader.multiplosArquivosLayoutReader(reader))
+				.reader(leituraArquivoLayout)
 				.processor(processor)
 				.writer(gravarLeituraArquivoLayout)
 				.build();

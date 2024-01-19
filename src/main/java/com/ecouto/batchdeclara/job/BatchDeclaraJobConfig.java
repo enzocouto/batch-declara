@@ -22,14 +22,13 @@ public class BatchDeclaraJobConfig {
 	private JobBuilderFactory jobBuilderFactory;
 	
     @Bean
-	public Job batchDeclaraJob(Step leituraArquivoStep, Step leituraNomesArquivosStep) {
+	public Job batchDeclaraJob(Step leituraNomesArquivosStep, Step leituraArquivoStep) {
 		
 		
 		return jobBuilderFactory
 				.get("batchDeclaraJob")
-				.incrementer(new RunIdIncrementer())
+				.incrementer(new RunIdIncrementer())	
 				.start(leituraNomesArquivosStep)
-				.next(leituraArquivoStep)
 				.build();
 		
 	}
