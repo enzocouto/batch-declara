@@ -11,8 +11,12 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.ecouto.batchdeclara.job.SalvarArquivoLayoutJobLauncher;
@@ -34,11 +38,15 @@ public class FileIndiceProcessorConfig implements ItemProcessor<FileIndice, Arqu
 	private JobBuilderFactory jobBuilderFactory;
 	
 	@Autowired
-	SalvarArquivoLayoutJobLauncher customJobLauncher;
+	SalvarArquivoLayoutJobLauncher salvarArquivoLayoutJobLauncher;
 		
 	
 	@Autowired
 	Step salvarArquivoLayoutStep;
+	
+	
+	@Autowired
+	Step leituraArquivoStep;
 	
 	@Override
 	public ArquivoLayout process(FileIndice item) throws Exception {
@@ -48,7 +56,7 @@ public class FileIndiceProcessorConfig implements ItemProcessor<FileIndice, Arqu
 		Map<String, JobParameter> mapParameters = new HashMap<>();
 		mapParameters.put("nomeArquivo", new JobParameter(arquivoLayout.getNomeArquivo()));
 		JobParameters parameters = new JobParameters(mapParameters);
-		customJobLauncher.run(salvarArquivoLayout(), parameters);
+		salvarArquivoLayoutJobLauncher.run(salvarArquivoLayout(), parameters);
 
 		return arquivoLayout;
 	}
@@ -56,8 +64,10 @@ public class FileIndiceProcessorConfig implements ItemProcessor<FileIndice, Arqu
 
 	private Job salvarArquivoLayout() {
 		
-		return jobBuilderFactory.get("salvarArquivoLayoutJob")
+		return jobBuilderFactory.get("salvarArquivoLayoutJob")		
 				.start(salvarArquivoLayoutStep)
+				.next(leituraArquivoStep)
+				.incrementer(new RunIdIncrementer())
 				.build();
 	}
 }

@@ -24,10 +24,9 @@ public class BatchDeclaraJobConfig {
     @Bean
 	public Job batchDeclaraJob(Step leituraNomesArquivosStep, Step leituraArquivoStep) {
 		
-		
 		return jobBuilderFactory
-				.get("batchDeclaraJob")
-				.incrementer(new RunIdIncrementer())	
+				.get("batchDeclaraJob")			
+				.incrementer(new RunIdIncrementer())
 				.start(leituraNomesArquivosStep)
 				.build();
 		

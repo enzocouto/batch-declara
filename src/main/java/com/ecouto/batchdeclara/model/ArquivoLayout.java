@@ -13,9 +13,11 @@ import com.ecouto.batchdeclara.enums.TipoEnvioEnum;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Builder
 @Setter
@@ -23,6 +25,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString
+@EqualsAndHashCode
 public class ArquivoLayout {
 
 	
@@ -38,7 +42,7 @@ public class ArquivoLayout {
 	private String nomeArquivo;
 	
 	@Column(name = "tipo_envio")
-	private TipoEnvioEnum tipoEnvio;
+	private Integer tipoEnvio;
 	
 	@Column(name = "qtdEvento")
 	private Integer qtdEvento;
@@ -83,14 +87,14 @@ public class ArquivoLayout {
 		return splitNomeArquivo;
 	}
 	
-    private static TipoEnvioEnum extractTipoEnvio(String nomeArquivo) {
+    private static Integer extractTipoEnvio(String nomeArquivo) {
 		
 		String strTipoEnvio = null;
 		String[] splitNomeArquivo = getNomeArquivoSplit(nomeArquivo);
 		if(splitNomeArquivo != null) 
 			strTipoEnvio = splitNomeArquivo[TIPO_ENVIO];
 		
-		return TipoEnvioEnum.getTipoEnvioByName(strTipoEnvio);
+		return TipoEnvioEnum.getTipoEnvioByName(strTipoEnvio).getValor();
 	}
     
     private String extractAnoMesRef(String nomeArquivo) {

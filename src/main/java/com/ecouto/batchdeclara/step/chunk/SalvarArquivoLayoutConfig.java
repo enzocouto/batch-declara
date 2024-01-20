@@ -66,7 +66,7 @@ public class SalvarArquivoLayoutConfig {
 					          .prepareStatement(strBuilder.toString(), Statement.RETURN_GENERATED_KEYS);
 					          ps.setString(1, arquivoLayout.getTipoLayout());
 					          ps.setString(2, arquivoLayout.getNomeArquivo());
-					          ps.setInt(3, arquivoLayout.getTipoEnvio().getValor());
+					          ps.setInt(3, arquivoLayout.getTipoEnvio());
 					          ps.setString(4, arquivoLayout.getAnoMesRef());
 					          ps.setTimestamp(5, Timestamp.valueOf(arquivoLayout.getDtProcessamento()));
 					          ps.setInt(6, arquivoLayout.getStatusEnvio());
