@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.ecouto.batchdeclara.listener.JobListenerExecution;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -28,8 +30,14 @@ public class BatchDeclaraJobConfig {
 				.get("batchDeclaraJob")			
 				.incrementer(new RunIdIncrementer())
 				.start(leituraNomesArquivosStep)
+				.listener(jobListener())
 				.build();
 		
+	}
+    
+	@Bean
+	public JobListenerExecution jobListener() {
+		return new JobListenerExecution();
 	}
 
 }
