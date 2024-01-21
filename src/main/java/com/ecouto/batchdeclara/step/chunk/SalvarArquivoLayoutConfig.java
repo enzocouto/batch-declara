@@ -55,7 +55,7 @@ public class SalvarArquivoLayoutConfig {
 					
 					StringBuilder strBuilder = new StringBuilder();
 					strBuilder.append("INSERT INTO ARQUIVO_LAYOUT(TIPO_LAYOUT,NOME_ARQUIVO,TIPO_ENVIO,");
-					strBuilder.append(" ANO_MES_REF,DATA_PROCESSAMENTO,STATUS_ENVIO) VALUES (?,?,?,?,?,?)");
+					strBuilder.append(" QTD_EVENTO,ANO_MES_REF,DATA_PROCESSAMENTO,STATUS_ENVIO) VALUES (?,?,?,?,?,?,?)");
 					
 					
 					KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -67,13 +67,14 @@ public class SalvarArquivoLayoutConfig {
 					          ps.setString(1, arquivoLayout.getTipoLayout());
 					          ps.setString(2, arquivoLayout.getNomeArquivo());
 					          ps.setInt(3, arquivoLayout.getTipoEnvio());
-					          ps.setString(4, arquivoLayout.getAnoMesRef());
-					          ps.setTimestamp(5, Timestamp.valueOf(arquivoLayout.getDtProcessamento()));
-					          ps.setInt(6, arquivoLayout.getStatusEnvio());
+					          ps.setLong(4, 0L);
+					          ps.setString(5, arquivoLayout.getAnoMesRef());
+					          ps.setTimestamp(6, Timestamp.valueOf(arquivoLayout.getDtProcessamento()));
+					          ps.setInt(7, arquivoLayout.getStatusEnvio());
 					          return ps;
 					        }, keyHolder);
 					
-			             System.out.println("KEY: "+ keyHolder.getKey());
+			             //System.out.println("KEY: "+ keyHolder.getKey());
 			             arquivoLayout.setId(keyHolder.getKey().longValue());
 				}
 				 															

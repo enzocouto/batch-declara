@@ -9,14 +9,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
 import com.ecouto.batchdeclara.model.ArquivoLayout;
+import com.ecouto.batchdeclara.model.XMLGerado;
 
 @Configuration
-public class LeituraMultiplosArquivosReader implements ItemStreamReader<ArquivoLayout>, ResourceAwareItemReaderItemStream<ArquivoLayout>{
+public class LeituraMultiplosArquivosReader implements ItemStreamReader<XMLGerado>, ResourceAwareItemReaderItemStream<XMLGerado>{
 
-	private FlatFileItemReader<ArquivoLayout> delegate;
+	private FlatFileItemReader<XMLGerado> delegate;
 	
 	
-	public LeituraMultiplosArquivosReader(FlatFileItemReader<ArquivoLayout> arquivoLayout) {
+	public LeituraMultiplosArquivosReader(FlatFileItemReader<XMLGerado> arquivoLayout) {
 		this.delegate = arquivoLayout;
 	}
 	
@@ -39,7 +40,7 @@ public class LeituraMultiplosArquivosReader implements ItemStreamReader<ArquivoL
 	}
 
 	@Override
-	public ArquivoLayout read()throws Exception  {
+	public XMLGerado read()throws Exception  {
 		
 		return delegate.read();
 	}

@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.ecouto.batchdeclara.model.ArquivoLayout;
+import com.ecouto.batchdeclara.model.XMLGerado;
 import com.ecouto.batchdeclara.repository.ArquivoLayoutRepository;
 
 @Component
@@ -29,7 +30,7 @@ public class MultiplosArquivosLayoutReaderConfig {
 	ArquivoLayoutRepository arquivoLayoutRepository;
 
 	@SuppressWarnings({"rawtypes", "unchecked" })
-	public ItemReader<ArquivoLayout> multiplosArquivosLayoutReader(FlatFileItemReader<ArquivoLayout> reader) {
+	public ItemReader<ArquivoLayout> multiplosArquivosLayoutReader(FlatFileItemReader<XMLGerado> reader) {
 		
 		return new MultiResourceItemReaderBuilder()
 				.name("multiplosArquivosLayoutReader")
@@ -40,7 +41,7 @@ public class MultiplosArquivosLayoutReaderConfig {
 	
 	
 	private Resource[] getArquivosFromDatabase() {
-		System.out.println("getArquivosFromDatabase");
+		//System.out.println("getArquivosFromDatabase");
 		
 		List<ArquivoLayout> nomesDosArquivos = jdbcTemplate.query("select id,nome_arquivo from arquivo_layout", new RowMapper<ArquivoLayout>() {
 

@@ -4,17 +4,8 @@ package com.ecouto.batchdeclara.fileindice.writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
-import org.springframework.batch.core.ItemWriteListener;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.StepExecution;
-import org.springframework.batch.core.configuration.annotation.StepScope;
-import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,7 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.ecouto.batchdeclara.model.ArquivoLayout;
 
 @Configuration
-public class JdbcArquivoLayoutWriter  {
+public class JdbcArquivoLayoutWriterConfig implements ItemWriter<ArquivoLayout> {
 
 	@Autowired
 	public JdbcTemplate jdbcTemplate;
@@ -31,18 +22,17 @@ public class JdbcArquivoLayoutWriter  {
 	
 	
 
-	@Bean
-	public ItemWriter<ArquivoLayout> jdbcArquivoWriter(DataSource dataSource){
+	@Override
+	public void write(List<? extends ArquivoLayout> items) throws Exception {
 		
-		System.out.println("GRAVANDO TABELA ARQUIVO_LAYOUT");
-	
-	    return items -> items.forEach(arquivo -> {
-	    	ArquivoLayout arquivoSalvo = findByNomeArquivo(arquivo.getNomeArquivo());
+		for(ArquivoLayout arquivoLayout : items) {
+			ArquivoLayout arquivoSalvo = findByNomeArquivo(arquivoLayout.getNomeArquivo());
 			arquivosLayout.add(arquivoSalvo);		
-			System.out.println("arquivo consultado: "+arquivoSalvo);
-	    });
+			//System.out.println("JdbcArquivoLayoutWriter write - arquivo consultado : "+arquivoSalvo);
+		}
 		
-	}	  
+		items = arquivosLayout;
+	}
 	
 	@SuppressWarnings({ "unchecked", "unchecked", "rawtypes" })
 	public ArquivoLayout findByNomeArquivo(String nomeArquivo) {
@@ -53,7 +43,6 @@ public class JdbcArquivoLayoutWriter  {
 			sql, 
 			new Object[]{nomeArquivo}, 
 			new BeanPropertyRowMapper(ArquivoLayout.class));
-
     }
 
 }

@@ -17,7 +17,7 @@ public class GravarLeituraArquivoLayout implements ItemWriter<ArquivoLayout> {
 		
 		for (ArquivoLayout arquivoLayout : items) {
 			
-			System.out.println(arquivoLayout.getNomeArquivo());
+			System.out.println("GravarLeituraArquivoLayout write: "+arquivoLayout);
 			
 		}
 		

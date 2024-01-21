@@ -12,6 +12,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
 import com.ecouto.batchdeclara.model.ArquivoLayout;
+import com.ecouto.batchdeclara.model.XMLGerado;
 
 
 
@@ -22,10 +23,10 @@ public class LeituraArquivoLayoutConfig {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Bean
 	@StepScope
-	public FlatFileItemReader<ArquivoLayout> leituraArquivoLayout(@Value("#{jobParameters['nomeArquivo']}") String arquivoLayout) throws UnexpectedInputException, ParseException, Exception {
+	public FlatFileItemReader<XMLGerado> leituraArquivoLayout(@Value("#{jobParameters['nomeArquivo']}") String nomeArquivoLayout) throws UnexpectedInputException, ParseException, Exception {
 		
 
-		Resource resource = new FileSystemResource("src/main/resources/"+arquivoLayout);
+		Resource resource = new FileSystemResource("src/main/resources/"+nomeArquivoLayout);
 		
 		return new FlatFileItemReaderBuilder()
 				.name("leituraArquivoLayout")
@@ -33,11 +34,9 @@ public class LeituraArquivoLayoutConfig {
 				.delimited()
 				.delimiter(";")
 				.names("nomeArquivo","qtdEvento")
-				.targetType(ArquivoLayout.class)
+				.targetType(XMLGerado.class)
 				.build();	
 		 
 	}
-
-	
 
 }

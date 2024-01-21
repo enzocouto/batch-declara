@@ -1,12 +1,15 @@
 package com.ecouto.batchdeclara.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import com.ecouto.batchdeclara.enums.StatusEnvioEnum;
 import com.ecouto.batchdeclara.enums.TipoEnvioEnum;
@@ -45,7 +48,7 @@ public class ArquivoLayout {
 	private Integer tipoEnvio;
 	
 	@Column(name = "qtdEvento")
-	private Integer qtdEvento;
+	private Long qtdEvento;
 	
 	@Column(name = "ano_mes_ref")
 	private String anoMesRef;
@@ -56,6 +59,8 @@ public class ArquivoLayout {
 	@Column(name = "status_envio")
 	private Integer statusEnvio;
 	
+	@Transient
+	private List<XMLGerado> xmlsGerado = new ArrayList<XMLGerado>();
 	
 	private static final Integer TIPO_LAYOUT = 2;
 	private static final Integer TIPO_ENVIO = 3;
@@ -66,7 +71,7 @@ public class ArquivoLayout {
 		this.nomeArquivo = nomeArquivo;
 		this.tipoLayout = extractTipoLayout(nomeArquivo);
 		this.tipoEnvio = extractTipoEnvio(nomeArquivo);
-		this.qtdEvento = 0;
+		this.qtdEvento = 0L;
 		this.anoMesRef = extractAnoMesRef(nomeArquivo);
 		this.dtProcessamento = LocalDateTime.now();
 		this.statusEnvio = StatusEnvioEnum.AGUARDANDO_PROCESSAMENTO.getValor();
