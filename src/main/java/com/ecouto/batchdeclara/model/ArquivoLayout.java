@@ -60,7 +60,7 @@ public class ArquivoLayout {
 	private Integer statusEnvio;
 	
 	@Transient
-	private List<XMLGerado> xmlsGerado = new ArrayList<XMLGerado>();
+	private XMLGerado xmlsGerado = XMLGerado.builder().build();
 	
 	private static final Integer TIPO_LAYOUT = 2;
 	private static final Integer TIPO_ENVIO = 3;

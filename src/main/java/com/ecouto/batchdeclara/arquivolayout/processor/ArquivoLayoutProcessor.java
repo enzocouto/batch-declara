@@ -29,15 +29,16 @@ public class ArquivoLayoutProcessor implements ItemProcessor<XMLGerado, ArquivoL
 			@Override
 			public ArquivoLayout process(XMLGerado xMLGerado) throws Exception {
 							
-				System.out.println("ArquivoLayoutProcessor ItemProcessor:"+nomeArquivo); 
+				//System.out.println("ArquivoLayoutProcessor ItemProcessor:"+nomeArquivo); 
 				
 				ArquivoLayout arquivo = findByNomeArquivo(nomeArquivo);
 				
 			    this.qtdEvento = this.qtdEvento + xMLGerado.getQtdEvento();
+			    arquivo.setQtdEvento(qtdEvento);
 			    xMLGerado.setIdLayotArquivo(arquivo.getId());
 				
-				arquivo.getXmlsGerado().add(xMLGerado);
-				System.out.println("ArquivoLayoutProcessor ItemProcessor:"+arquivo); 
+				arquivo.setXmlsGerado(xMLGerado);
+				//System.out.println("ArquivoLayoutProcessor ItemProcessor:"+arquivo); 
 				return arquivo;
 			}
 			
@@ -71,7 +72,7 @@ public class ArquivoLayoutProcessor implements ItemProcessor<XMLGerado, ArquivoL
 
 			@Override
 			public void onProcessError(XMLGerado item, Exception e) {
-				System.out.println("ArquivoLayoutProcessor - onProcessError" + item.getNomeArquivo() + e.getMessage());
+				System.out.println("ArquivoLayoutProcessor - onProcessError" + item.getNomeArquivoXML() + e.getMessage());
 				
 			}
 

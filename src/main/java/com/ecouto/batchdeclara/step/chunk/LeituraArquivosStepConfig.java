@@ -31,7 +31,7 @@ public class LeituraArquivosStepConfig {
 			      
 		return stepBuilderFactory
 				.get("leituraArquivoStep")
-				.<XMLGerado, ArquivoLayout>chunk(1)
+				.<XMLGerado, ArquivoLayout>chunk(10)
 				.reader(leituraArquivoLayout)
 				.processor(processor)
 				.writer(gravarLeituraArquivoLayout)
