@@ -29,7 +29,7 @@ public class FileIndice {
 	private String nomeArquivo;
 	
 	@Column(name = "STATUS")
-	private char status;
+	private Integer status;
 	
 	
 }

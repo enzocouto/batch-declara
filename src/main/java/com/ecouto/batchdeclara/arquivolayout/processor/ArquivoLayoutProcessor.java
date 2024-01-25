@@ -64,8 +64,8 @@ public class ArquivoLayoutProcessor implements ItemProcessor<XMLGerado, ArquivoL
 
 			@Override
 			public void afterProcess(XMLGerado item, ArquivoLayout result) {
-				result.setQtdEvento(qtdEvento);
-				System.out.println("ArquivoLayoutProcessor - afterProcess: "+item + " - "+ result);
+				//result.setQtdEvento(qtdEvento);
+				//System.out.println("ArquivoLayoutProcessor - afterProcess: "+item + " - "+ result);
 				
 			}
 

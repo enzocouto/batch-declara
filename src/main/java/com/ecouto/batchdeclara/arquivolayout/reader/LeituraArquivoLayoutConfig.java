@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
-import com.ecouto.batchdeclara.model.ArquivoLayout;
 import com.ecouto.batchdeclara.model.XMLGerado;
 
 

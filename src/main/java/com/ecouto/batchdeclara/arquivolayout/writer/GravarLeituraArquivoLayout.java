@@ -2,7 +2,6 @@ package com.ecouto.batchdeclara.arquivolayout.writer;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.batch.item.ItemWriter;
@@ -23,6 +22,7 @@ public class GravarLeituraArquivoLayout implements ItemWriter<ArquivoLayout> {
 	
 	@Override
 	public void write(List<? extends ArquivoLayout> items) throws Exception {
+		
 		
 		for (ArquivoLayout arquivoLayout : items) {
 			XMLGerado xmlGerado = arquivoLayout.getXmlsGerado();

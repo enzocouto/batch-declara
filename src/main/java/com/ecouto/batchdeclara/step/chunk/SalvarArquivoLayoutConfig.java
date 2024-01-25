@@ -18,6 +18,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
+import com.ecouto.batchdeclara.enums.StatusEnvioEnum;
 import com.ecouto.batchdeclara.model.ArquivoLayout;
 
 @Configuration
@@ -50,7 +51,6 @@ public class SalvarArquivoLayoutConfig {
 				if(jobParameters.getString("nomeArquivo") != null) {
 					
 					String nomeArquivo = jobParameters.getString("nomeArquivo");
-					
 					ArquivoLayout arquivoLayout = new ArquivoLayout(nomeArquivo);
 					
 					StringBuilder strBuilder = new StringBuilder();

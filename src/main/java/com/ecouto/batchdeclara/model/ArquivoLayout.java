@@ -50,6 +50,9 @@ public class ArquivoLayout {
 	@Column(name = "qtdEvento")
 	private Long qtdEvento;
 	
+	@Column(name = "qtd_XML")
+	private Long qtdXML;
+	
 	@Column(name = "ano_mes_ref")
 	private String anoMesRef;
 	
@@ -72,9 +75,10 @@ public class ArquivoLayout {
 		this.tipoLayout = extractTipoLayout(nomeArquivo);
 		this.tipoEnvio = extractTipoEnvio(nomeArquivo);
 		this.qtdEvento = 0L;
+		this.qtdXML = 0L;
 		this.anoMesRef = extractAnoMesRef(nomeArquivo);
 		this.dtProcessamento = LocalDateTime.now();
-		this.statusEnvio = StatusEnvioEnum.AGUARDANDO_PROCESSAMENTO.getValor();
+		this.statusEnvio = StatusEnvioEnum.PROCESSANDO.getValor();
 		
 	}
 	

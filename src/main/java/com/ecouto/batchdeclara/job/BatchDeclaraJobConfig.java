@@ -27,7 +27,7 @@ public class BatchDeclaraJobConfig {
 	public Job batchDeclaraJob(Step leituraNomesArquivosStep, Step leituraArquivoStep) {
 		
 		return jobBuilderFactory
-				.get("batchDeclaraJob")			
+				.get("batchDeclaraJob")	
 				.incrementer(new RunIdIncrementer())
 				.start(leituraNomesArquivosStep)
 				.listener(jobListener())
