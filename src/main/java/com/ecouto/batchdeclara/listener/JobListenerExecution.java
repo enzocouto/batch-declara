@@ -27,8 +27,12 @@ public class JobListenerExecution implements JobExecutionListener {
 	public void beforeJob(JobExecution jobExecution) {
 		
 		System.out.println("JobListenerExecution beforeJob");
-		
-		 String sql = "SELECT ID, NOMEARQUIVO, STATUS FROM file_indice";
+		logarFileIndice();
+		 		
+	}
+
+	private void logarFileIndice() {
+		String sql = "SELECT ID, NOMEARQUIVO, STATUS FROM file_indice";
 
 		 List<FileIndice>  listaFiles = jdbcTemplate.query(sql,new RowMapper<FileIndice>() {
 
@@ -57,7 +61,6 @@ public class JobListenerExecution implements JobExecutionListener {
 				 System.out.println("");
 			 }
 		 }
-		 		
 	}
 
 	@Override
@@ -95,7 +98,6 @@ public class JobListenerExecution implements JobExecutionListener {
 		//ÄTUALIZA file_indice para status Processamento para Finalizado 	
 		StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("UPDATE file_indice SET STATUS = ? ");
-		
 		
 		 jdbcTemplate.update(connection -> {
 		        PreparedStatement ps = connection

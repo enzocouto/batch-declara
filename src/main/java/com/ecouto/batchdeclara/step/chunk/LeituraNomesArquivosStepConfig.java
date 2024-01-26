@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.ecouto.batchdeclara.fileindice.processor.FileIndiceProcessorConfig;
 import com.ecouto.batchdeclara.fileindice.writer.JdbcArquivoLayoutWriterConfig;
-import com.ecouto.batchdeclara.listener.ArquivoLayoutChunkListener;
+import com.ecouto.batchdeclara.listener.LeituraNomesStepChunkListener;
 import com.ecouto.batchdeclara.listener.GravarArquivoLayoutWriterListener;
 import com.ecouto.batchdeclara.model.ArquivoLayout;
 import com.ecouto.batchdeclara.model.FileIndice;
@@ -52,7 +52,7 @@ public class LeituraNomesArquivosStepConfig {
 	@StepScope
     public ChunkListener chunkListener() {
 		
-		return new ArquivoLayoutChunkListener();
+		return new LeituraNomesStepChunkListener();
 	}
 
 	@Bean

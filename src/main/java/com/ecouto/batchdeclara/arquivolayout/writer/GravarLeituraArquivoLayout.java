@@ -23,13 +23,11 @@ public class GravarLeituraArquivoLayout implements ItemWriter<ArquivoLayout> {
 	@Override
 	public void write(List<? extends ArquivoLayout> items) throws Exception {
 		
-		
 		for (ArquivoLayout arquivoLayout : items) {
 			XMLGerado xmlGerado = arquivoLayout.getXmlsGerado();
 			StringBuilder strBuilder = new StringBuilder();
 			strBuilder.append("INSERT INTO XML_GERADO (ID_LAYOUT_ARQUIVO,NOME_ARQUIVO_XML,QTD_EVENTO)");
 			strBuilder.append(" VALUES(?,?,?)");
-			
 			
 			 jdbcTemplate.update(connection -> {
 			        PreparedStatement ps = connection

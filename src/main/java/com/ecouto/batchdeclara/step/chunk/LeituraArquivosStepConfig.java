@@ -12,7 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.ecouto.batchdeclara.arquivolayout.writer.GravarLeituraArquivoLayout;
-import com.ecouto.batchdeclara.listener.ArquivoLayoutChunkListener;
+import com.ecouto.batchdeclara.listener.LeituraArquivoStepChunkListener;
+import com.ecouto.batchdeclara.listener.LeituraNomesStepChunkListener;
 import com.ecouto.batchdeclara.model.ArquivoLayout;
 import com.ecouto.batchdeclara.model.XMLGerado;
 
@@ -46,7 +47,7 @@ public class LeituraArquivosStepConfig {
 	@StepScope
     public ChunkListener chunkListener() {
 		
-		return new ArquivoLayoutChunkListener();
+		return new LeituraArquivoStepChunkListener();
 	}
 	
 }

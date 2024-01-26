@@ -3,10 +3,9 @@ package com.ecouto.batchdeclara.listener;
 import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.scope.context.ChunkContext;
 
-public class ArquivoLayoutChunkListener implements ChunkListener {
+public class LeituraNomesStepChunkListener implements ChunkListener {
 
  
-
 	@Override
 	public void beforeChunk(ChunkContext context) {
 		
