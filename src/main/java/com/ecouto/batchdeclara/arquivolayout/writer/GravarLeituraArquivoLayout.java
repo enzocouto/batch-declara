@@ -1,44 +1,35 @@
 package com.ecouto.batchdeclara.arquivolayout.writer;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.util.List;
+import javax.sql.DataSource;
 
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.batch.item.database.JdbcBatchItemWriter;
+import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-import com.ecouto.batchdeclara.model.ArquivoLayout;
 import com.ecouto.batchdeclara.model.XMLGerado;
 
 
-@Component
-public class GravarLeituraArquivoLayout implements ItemWriter<ArquivoLayout> {
+@Configuration
+public class GravarLeituraArquivoLayout {
 	
-	
-	@Autowired
-    private JdbcTemplate jdbcTemplate;
-	
-	@Override
-	public void write(List<? extends ArquivoLayout> items) throws Exception {
+	@Bean
+	public JdbcBatchItemWriter<XMLGerado> write(DataSource dataSource) throws Exception {
 		
-		for (ArquivoLayout arquivoLayout : items) {
-			XMLGerado xmlGerado = arquivoLayout.getXmlsGerado();
-			StringBuilder strBuilder = new StringBuilder();
-			strBuilder.append("INSERT INTO XML_GERADO (ID_LAYOUT_ARQUIVO,NOME_ARQUIVO_XML,QTD_EVENTO)");
-			strBuilder.append(" VALUES(?,?,?)");
-			
-			 jdbcTemplate.update(connection -> {
-			        PreparedStatement ps = connection
-			          .prepareStatement(strBuilder.toString(), Statement.RETURN_GENERATED_KEYS);
-			          ps.setLong(1, xmlGerado.getIdLayotArquivo());
-			          ps.setString(2, xmlGerado.getNomeArquivoXML());
-			          ps.setInt(3, xmlGerado.getQtdEvento());
-			 
-			          return ps;
-			        });
-		}
+		
+		      StringBuilder strBuilder = new StringBuilder();
+		      strBuilder.append("INSERT INTO XML_GERADO(");
+		      strBuilder.append("ID_LAYOUT_ARQUIVO,");
+		      strBuilder.append("NOME_ARQUIVO_XML,");
+		      strBuilder.append("QTD_EVENTO");
+		      strBuilder.append(") VALUES(");
+		      strBuilder.append(":idLayotArquivo, :nomeArquivoXML, :qtdEvento)");
+		      
+              return new JdbcBatchItemWriterBuilder<XMLGerado>()
+            		  .dataSource(dataSource)
+            		  .sql(strBuilder.toString())
+            		  .beanMapped()
+            		  .build();
 		
 	}
 }

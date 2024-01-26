@@ -14,7 +14,7 @@ import com.ecouto.batchdeclara.model.XMLGerado;
 
 @Component
 @StepScope
-public class ArquivoLayoutProcessor implements ItemProcessor<XMLGerado, ArquivoLayout>, ItemProcessListener<XMLGerado,ArquivoLayout> {
+public class ArquivoLayoutProcessor implements ItemProcessor<XMLGerado, XMLGerado>, ItemProcessListener<XMLGerado,XMLGerado> {
 
 	
 	        @Value("#{jobParameters['nomeArquivo']}")
@@ -22,28 +22,16 @@ public class ArquivoLayoutProcessor implements ItemProcessor<XMLGerado, ArquivoL
 	     
 	        @Autowired
 	    	public JdbcTemplate jdbcTemplate;
-	        
-	        
-	        private Long qtdEvento = 0L;
-	        
-			@Override
-			public ArquivoLayout process(XMLGerado xMLGerado) throws Exception {
-							
-				//System.out.println("ArquivoLayoutProcessor ItemProcessor:"+nomeArquivo); 
-				
+	            
+	        @Override
+			public XMLGerado process(XMLGerado item) throws Exception {
 				ArquivoLayout arquivo = findByNomeArquivo(nomeArquivo);
-				
-			    this.qtdEvento = this.qtdEvento + xMLGerado.getQtdEvento();
-			    arquivo.setQtdEvento(qtdEvento);
-			    xMLGerado.setIdLayotArquivo(arquivo.getId());
-				
-				arquivo.setXmlsGerado(xMLGerado);
-				//System.out.println("ArquivoLayoutProcessor ItemProcessor:"+arquivo); 
-				return arquivo;
+				item.setIdLayotArquivo(arquivo.getId());
+				return item;
 			}
-			
-			
-			@SuppressWarnings({ "unchecked", "unchecked", "rawtypes" })
+	        
+	       
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public ArquivoLayout findByNomeArquivo(String nomeArquivo) {
 
 		        String sql = "SELECT * FROM ARQUIVO_LAYOUT WHERE NOME_ARQUIVO = ?";
@@ -56,25 +44,16 @@ public class ArquivoLayoutProcessor implements ItemProcessor<XMLGerado, ArquivoL
 
 
 			@Override
-			public void beforeProcess(XMLGerado item) {
-				//System.out.println("ArquivoLayoutProcessor - beforeProcess: "+item);
-				
-			}
+			public void beforeProcess(XMLGerado item) {}
 
-
-			@Override
-			public void afterProcess(XMLGerado item, ArquivoLayout result) {
-				//result.setQtdEvento(qtdEvento);
-				//System.out.println("ArquivoLayoutProcessor - afterProcess: "+item + " - "+ result);
-				
-			}
-
-
+			 @Override
+			public void afterProcess(XMLGerado item, XMLGerado result) {}
+			 
+			 
 			@Override
 			public void onProcessError(XMLGerado item, Exception e) {
 				System.out.println("ArquivoLayoutProcessor - onProcessError" + item.getNomeArquivoXML() + e.getMessage());
 				
 			}
-
 
 }
